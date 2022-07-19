@@ -1,6 +1,7 @@
+require './nameable.rb'
 # rubocop:disable Naming/PredicateName
 
-class Person
+class Person < Nameable
     attr_reader :id
     attr_accessor :name, :age, :parent_permission
 
@@ -9,6 +10,11 @@ class Person
     @name = name
     @age = age
     @parent_permission = parent_permission
+    super()
+  end
+
+  def correct_name
+    @name.correct_name
   end
 
   def can_use_services?
