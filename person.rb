@@ -14,7 +14,7 @@ class Person < Nameable
   end
 
   def correct_name
-    @name.correct_name
+    @name
   end
 
   def can_use_services?
