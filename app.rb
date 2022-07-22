@@ -1,9 +1,9 @@
-require './person'
-require './student'
-require './teacher'
-require './book'
-require './classroom'
-require './rental'
+require_relative 'person'
+require_relative 'student'
+require_relative 'teacher'
+require_relative 'book'
+require_relative 'classroom'
+require_relative 'rental'
 
 class App
   def initialize
@@ -77,6 +77,8 @@ class App
     age = gets.chomp.to_i
     print 'Enter teacher specialization: '
     specialization = gets.chomp
+    print 'Enter teacher name: '
+    name = gets.chomp
     teacher = Teacher.new(specialization, age, name)
     @persons << teacher
     puts 'Teacher created successfully'
