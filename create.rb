@@ -24,15 +24,15 @@ class CreatePeople
   def list_all_rentals
     id = user_input('To see rentals enter the person ID: ')
 
-    puts 'Rented Books: '
-    @rentals.each do |rental|
+    puts "Rented Books for #{id}:"
+    test = false
+    @rentals.any? do |rental|
       if rental.person.id == id.to_i
+        test = true
         puts "Person: #{rental.person.name} Date: #{rental.date}, Book: '#{rental.book.title}' by #{rental.book.author}"
-      else
-        puts
-        puts 'No record were found for the given ID'
       end
     end
+    puts 'No record were found for the given ID' unless test
   end
 
   def create_person
@@ -45,6 +45,7 @@ class CreatePeople
     else
       puts 'Invalid input. Try again'
     end
+    save_persons
   end
 
   def create_student
@@ -54,11 +55,11 @@ class CreatePeople
     parent_permission = user_input('Has parent permission? [Y/N]: ').downcase
     case parent_permission
     when 'n'
-      student = Student.new(age: age, name: name, parent_permission: parent_permission, classroom: @classroom)
+      student = Student.new(age, 'classroom', name, false)
       @persons << student
       puts 'Student doesn\'t have parent permission, can\'t rent books'
     when 'y'
-      student = Student.new(age: age, name: name, parent_permission: parent_permission, classroom: @classroom)
+      student = Student.new(age, 'classroom', name, true)
       @persons << student
       puts 'Student created successfully'
     end
@@ -69,7 +70,7 @@ class CreatePeople
     age = user_input('Enter teacher age: ').to_i
     specialization = user_input('Enter teacher specialization: ')
     name = user_input('Enter teachers name: ')
-    teacher = Teacher.new(specialization: specialization, age: age, name: name)
+    teacher = Teacher.new(age, specialization, name)
     @persons << teacher
     puts 'Teacher created successfully'
   end
@@ -81,6 +82,7 @@ class CreatePeople
     book = Book.new(title, author)
     @books.push(book)
     puts "Book #{title} created successfully."
+    save_books
   end
 
   def create_rental
@@ -98,5 +100,12 @@ class CreatePeople
     @rentals << rental
 
     puts 'Rental created successfully'
+    save_rentals(date, person_id, book_id)
+  end
+
+  def run
+    @persons = read_person
+    @books = read_book
+    @rentals = read_rentals
   end
 end
