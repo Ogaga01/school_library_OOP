@@ -49,6 +49,7 @@ end
 
 def main
   app = PrintScript.new
+  app.run
   app.run_app
 end
 
