@@ -1,9 +1,13 @@
+require_relative 'input'
+
 class CreatePeople
   def initialize
     @books = []
     @persons = []
     @rentals = []
   end
+
+  include Input
 
   def list_all_books
     puts 'Database is empty! Add a book.' if @books.empty?
@@ -18,12 +22,11 @@ class CreatePeople
   end
 
   def list_all_rentals
-    puts 'To see rentals enter the person ID: '
-    id = gets.chomp.to_i
+    id = user_input('To see rentals enter the person ID: ')
 
     puts 'Rented Books: '
     @rentals.each do |rental|
-      if rental.person.id == id
+      if rental.person.id == id.to_i
         puts "Person: #{rental.person.name} Date: #{rental.date}, Book: '#{rental.book.title}' by #{rental.book.author}"
       else
         puts
@@ -33,9 +36,7 @@ class CreatePeople
   end
 
   def create_person
-    print 'press 1 to create a student, press 2 to create a teacher : '
-    option = gets.chomp
-
+    option = user_input('press 1 to create a student, press 2 to create a teacher : ')
     case option
     when '1'
       create_student
@@ -48,12 +49,9 @@ class CreatePeople
 
   def create_student
     puts 'create a new student'
-    print 'Enter student age: '
-    age = gets.chomp.to_i
-    print 'Enter name: '
-    name = gets.chomp
-    print 'Has parent permission? [Y/N]: '
-    parent_permission = gets.chomp.downcase
+    age = user_input('Enter student age: ').to_i
+    name = user_input('Enter name: ').to_i
+    parent_permission = user_input('Has parent permission? [Y/N]: ').downcase
     case parent_permission
     when 'n'
       student = Student.new(age: age, name: name, parent_permission: parent_permission, classroom: @classroom)
@@ -68,12 +66,9 @@ class CreatePeople
 
   def create_teacher
     puts 'create a new teacher'
-    print 'Enter teacher age: '
-    age = gets.chomp.to_i
-    print 'Enter teacher specialization: '
-    specialization = gets.chomp
-    print 'Enter teachers name: '
-    name = gets.chomp
+    age = user_input('Enter teacher age: ').to_i
+    specialization = user_input('Enter teacher specialization: ')
+    name = user_input('Enter teachers name: ')
     teacher = Teacher.new(specialization: specialization, age: age, name: name)
     @persons << teacher
     puts 'Teacher created successfully'
@@ -81,10 +76,8 @@ class CreatePeople
 
   def create_book
     puts 'create a new book'
-    print 'Enter title: '
-    title = gets.chomp
-    print 'Enter author: '
-    author = gets
+    title = user_input('Enter title: ')
+    author = user_input('Enter author: ')
     book = Book.new(title, author)
     @books.push(book)
     puts "Book #{title} created successfully."
@@ -99,11 +92,8 @@ class CreatePeople
     @persons.each_with_index do |person, index|
       puts "#{index} [#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
     end
-
     person_id = gets.chomp.to_i
-
-    print 'Date: '
-    date = gets.chomp.to_s
+    date = user_input('Date: ').to_s
     rental = Rental.new(date, @persons[person_id], @books[book_id])
     @rentals << rental
 
