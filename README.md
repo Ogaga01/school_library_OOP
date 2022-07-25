@@ -54,6 +54,12 @@ Kindly modify the files as needed.
 - Twitter: [@twitterhandle](https://twitter.com/i_ogaga_n)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/ogaga-iyara)
 
+👤 **Author1**
+
+- GitHub: [@Chala](https://github.com/ichala)
+- Twitter: [@_ichala](https://twitter.com/_ichala)
+- LinkedIn: [Ali Jendoubi](https://www.linkedin.com/in/alijendoubi/)
+
 
 ## 🤝 Contributing
 
