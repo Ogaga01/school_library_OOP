@@ -1,4 +1,5 @@
 require './app'
+require './create'
 
 class PrintScript < CreatePeople
   def run_app
