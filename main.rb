@@ -27,7 +27,7 @@ class PrintScript < CreatePeople
     puts '7 - Exit'
   end
 
-    def option(input)
+  def option(input)
     case input
     when '1'
       list_all_books
