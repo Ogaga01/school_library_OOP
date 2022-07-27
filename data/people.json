@@ -1,14 +1,14 @@
 [
   {
-    "occupation": "Student",
-    "name": "Ogaga",
-    "age": 27,
-    "parent_permission": true
+    "occupation": "Teacher",
+    "name": "joe",
+    "age": 54,
+    "specialization": "chemistry"
   },
   {
-    "occupation": "Teacher",
-    "name": "Ali",
-    "age": 27,
-    "specialization": "Software Development"
+    "occupation": "Student",
+    "name": "mike",
+    "age": 19,
+    "parent_permission": true
   }
 ]
