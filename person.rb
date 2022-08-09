@@ -2,9 +2,10 @@ require_relative 'nameable'
 
 class Person < Nameable
   attr_reader :id
-  attr_accessor :name, :age, :books, :rentals
+  attr_accessor :name, :age, :books, :rentals, :parent_permission
 
-  def initialize(age:, name: 'Unknown', parent_permission: true)
+  # rubocop:disable Style/OptionalBooleanParameter
+  def initialize(age, name = 'Unknown', parent_permission = true)
     super()
     @id = Random.rand(1..100)
     @name = name
@@ -12,13 +13,14 @@ class Person < Nameable
     @parent_permission = parent_permission
     @rentals = []
   end
+  # rubocop:enable Style/OptionalBooleanParameter
 
   def add_rental(book, date)
     Rental.new(date, self, book)
   end
 
   def correct_name
-    @name.correct_name
+    @name
   end
 
   def of_age?

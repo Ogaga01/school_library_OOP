@@ -1,5 +1,5 @@
-require './app'
-require './create'
+require_relative './app'
+require_relative './create'
 
 class PrintScript < CreatePeople
   def run_app
@@ -49,6 +49,7 @@ end
 
 def main
   app = PrintScript.new
+  app.run
   app.run_app
 end
 

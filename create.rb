@@ -1,13 +1,9 @@
-require_relative 'input'
-
 class CreatePeople
   def initialize
     @books = []
     @persons = []
     @rentals = []
   end
-
-  include Input
 
   def list_all_books
     puts 'Database is empty! Add a book.' if @books.empty?
@@ -22,21 +18,24 @@ class CreatePeople
   end
 
   def list_all_rentals
-    id = user_input('To see rentals enter the person ID: ')
+    puts 'To see rentals enter the person ID: '
+    id = gets.chomp.to_i
 
-    puts 'Rented Books: '
-    @rentals.each do |rental|
-      if rental.person.id == id.to_i
+    puts "Rented Books for #{id}:"
+    test = false
+    @rentals.any? do |rental|
+      if rental.person.id == id
+        test = true
         puts "Person: #{rental.person.name} Date: #{rental.date}, Book: '#{rental.book.title}' by #{rental.book.author}"
-      else
-        puts
-        puts 'No record were found for the given ID'
       end
     end
+    puts 'No record were found for the given ID' unless test
   end
 
   def create_person
-    option = user_input('press 1 to create a student, press 2 to create a teacher : ')
+    print 'press 1 to create a student, press 2 to create a teacher : '
+    option = gets.chomp
+
     case option
     when '1'
       create_student
@@ -45,20 +44,24 @@ class CreatePeople
     else
       puts 'Invalid input. Try again'
     end
+    save_persons
   end
 
   def create_student
     puts 'create a new student'
-    age = user_input('Enter student age: ').to_i
-    name = user_input('Enter name: ').to_i
-    parent_permission = user_input('Has parent permission? [Y/N]: ').downcase
+    print 'Enter student age: '
+    age = gets.chomp.to_i
+    print 'Enter name: '
+    name = gets.chomp
+    print 'Has parent permission? [Y/N]: '
+    parent_permission = gets.chomp.downcase
     case parent_permission
     when 'n'
-      student = Student.new(age: age, name: name, parent_permission: parent_permission, classroom: @classroom)
+      student = Student.new(age, 'classroom', name, false)
       @persons << student
       puts 'Student doesn\'t have parent permission, can\'t rent books'
     when 'y'
-      student = Student.new(age: age, name: name, parent_permission: parent_permission, classroom: @classroom)
+      student = Student.new(age, 'classroom', name, true)
       @persons << student
       puts 'Student created successfully'
     end
@@ -66,21 +69,27 @@ class CreatePeople
 
   def create_teacher
     puts 'create a new teacher'
-    age = user_input('Enter teacher age: ').to_i
-    specialization = user_input('Enter teacher specialization: ')
-    name = user_input('Enter teachers name: ')
-    teacher = Teacher.new(specialization: specialization, age: age, name: name)
+    print 'Enter teacher age: '
+    age = gets.chomp.to_i
+    print 'Enter teacher specialization: '
+    specialization = gets.chomp
+    print 'Enter teachers name: '
+    name = gets.chomp
+    teacher = Teacher.new(age, specialization, name)
     @persons << teacher
     puts 'Teacher created successfully'
   end
 
   def create_book
     puts 'create a new book'
-    title = user_input('Enter title: ')
-    author = user_input('Enter author: ')
+    print 'Enter title: '
+    title = gets.chomp
+    print 'Enter author: '
+    author = gets
     book = Book.new(title, author)
     @books.push(book)
     puts "Book #{title} created successfully."
+    save_books
   end
 
   def create_rental
@@ -92,11 +101,21 @@ class CreatePeople
     @persons.each_with_index do |person, index|
       puts "#{index} [#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
     end
+
     person_id = gets.chomp.to_i
-    date = user_input('Date: ').to_s
+
+    print 'Date: '
+    date = gets.chomp.to_s
     rental = Rental.new(date, @persons[person_id], @books[book_id])
     @rentals << rental
 
     puts 'Rental created successfully'
+    save_rentals(date, person_id, book_id)
+  end
+
+  def run
+    @persons = read_person
+    @books = read_book
+    @rentals = read_rentals
   end
 end

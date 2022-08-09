@@ -4,6 +4,8 @@ require_relative 'teacher'
 require_relative 'book'
 require_relative 'classroom'
 require_relative 'rental'
+require 'json'
+require './data/read_write'
 
 class App
   def initialize
